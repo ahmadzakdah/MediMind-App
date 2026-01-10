@@ -1,16 +1,24 @@
-package com.example.medimind.ui;
+package com.example.medimind.ui.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medimind.R;
-import com.example.medimind.ui.base.BaseActivity;
+import com.example.medimind.ui.CreateMedicalRecordActivity;
+import com.example.medimind.ui.PatientInfoActivity;
 import com.example.medimind.ui.HelperClasses.PatientSearchAdapter;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -21,48 +29,47 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class SearchActivity extends BaseActivity {
+public class HomeFragment extends Fragment {
 
     private TextInputLayout tilSearch;
     private TextInputEditText etSearch;
     private Button btnSearch, btnCreateRecord;
 
-    private android.widget.LinearLayout layoutEmptyState;
-
+    private LinearLayout layoutEmptyState;
     private RecyclerView rvPatients;
     private PatientSearchAdapter adapter;
 
     private FirebaseAuth auth;
     private FirebaseFirestore db;
 
+    @Nullable
     @Override
-    protected int getActiveNavId() {
-      return R.id.navHome; // لأنه هاي الصفحة هي الهوم
-       }
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentLayout(R.layout.activity_search);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        // Firebase
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        // Bind
-        tilSearch = findViewById(R.id.tilSearch);
-        etSearch = findViewById(R.id.etSearch);
-        btnSearch = findViewById(R.id.btnSearch);
-        btnCreateRecord = findViewById(R.id.btnCreateRecord);
-        layoutEmptyState = findViewById(R.id.layoutEmptyState);
+        // Bind (لاحظ: view.findViewById)
+        tilSearch = view.findViewById(R.id.tilSearch);
+        etSearch = view.findViewById(R.id.etSearch);
+        btnSearch = view.findViewById(R.id.btnSearch);
+        btnCreateRecord = view.findViewById(R.id.btnCreateRecord);
+        layoutEmptyState = view.findViewById(R.id.layoutEmptyState);
 
-        rvPatients = findViewById(R.id.rvPatients);
-        rvPatients.setLayoutManager(new LinearLayoutManager(this));
+        rvPatients = view.findViewById(R.id.rvPatients);
+        rvPatients.setLayoutManager(new LinearLayoutManager(requireContext()));
+
         adapter = new PatientSearchAdapter(patient -> {
-            // ✅ فتح صفحة معلومات المريض
-            Intent i = new Intent(SearchActivity.this, PatientInfoActivity.class);
+            Intent i = new Intent(requireContext(), PatientInfoActivity.class);
             i.putExtra("mrn", patient.mrn);
             startActivity(i);
         });
+
         rvPatients.setAdapter(adapter);
 
         showEmptyState();
@@ -76,7 +83,6 @@ public class SearchActivity extends BaseActivity {
             }
             clearFieldError();
 
-            // إذا أرقام فقط => MRN
             if (input.matches("\\d+")) {
                 searchByMrn(input);
             } else {
@@ -85,15 +91,19 @@ public class SearchActivity extends BaseActivity {
         });
 
         btnCreateRecord.setOnClickListener(v -> {
-            Intent intent = new Intent(SearchActivity.this, CreateMedicalRecordActivity.class);
+            if (getActivity() == null) return;
+            Intent intent = new Intent(getActivity(), CreateMedicalRecordActivity.class);
             startActivity(intent);
         });
+
+
+        return view;
     }
 
     private void searchByMrn(String mrn) {
         String doctorUid = (auth.getCurrentUser() != null) ? auth.getCurrentUser().getUid() : null;
         if (doctorUid == null) {
-            Toast.makeText(this, "Please login first.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Please login first.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -106,7 +116,7 @@ public class SearchActivity extends BaseActivity {
                     if (!doc.exists()) {
                         adapter.setItems(new ArrayList<>());
                         showEmptyState();
-                        Toast.makeText(this, "No patient found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "No patient found", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
@@ -131,14 +141,14 @@ public class SearchActivity extends BaseActivity {
                     showResults();
                 })
                 .addOnFailureListener(e ->
-                        Toast.makeText(this, "Search failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Search failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                 );
     }
 
     private void searchByName(String name) {
         String doctorUid = (auth.getCurrentUser() != null) ? auth.getCurrentUser().getUid() : null;
         if (doctorUid == null) {
-            Toast.makeText(this, "Please login first.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Please login first.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -156,7 +166,7 @@ public class SearchActivity extends BaseActivity {
                     if (snap == null || snap.isEmpty()) {
                         adapter.setItems(new ArrayList<>());
                         showEmptyState();
-                        Toast.makeText(this, "No patient found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "No patient found", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
@@ -183,22 +193,22 @@ public class SearchActivity extends BaseActivity {
                     showResults();
                 })
                 .addOnFailureListener(e ->
-                        Toast.makeText(this, "Search failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Search failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                 );
     }
 
     private void showEmptyState() {
-        layoutEmptyState.setVisibility(android.view.View.VISIBLE);
-        rvPatients.setVisibility(android.view.View.GONE);
+        if (layoutEmptyState != null) layoutEmptyState.setVisibility(View.VISIBLE);
+        if (rvPatients != null) rvPatients.setVisibility(View.GONE);
     }
 
     private void showResults() {
-        layoutEmptyState.setVisibility(android.view.View.GONE);
-        rvPatients.setVisibility(android.view.View.VISIBLE);
+        if (layoutEmptyState != null) layoutEmptyState.setVisibility(View.GONE);
+        if (rvPatients != null) rvPatients.setVisibility(View.VISIBLE);
     }
 
     private String textOf(TextInputEditText et) {
-        return et.getText() != null ? et.getText().toString().trim() : "";
+        return (et.getText() != null) ? et.getText().toString().trim() : "";
     }
 
     private void setFieldError(String msg) {

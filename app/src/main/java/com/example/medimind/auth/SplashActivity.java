@@ -7,7 +7,7 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.medimind.R;
-import com.example.medimind.ui.SearchActivity;
+import com.example.medimind.ui.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -25,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
             if (user != null) {
                 // logged in → go to main
                 System.out.println(user.getUid());
-                startActivity(new Intent(SplashActivity.this, SearchActivity.class));
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
             } else {
                 // not logged in → go to login
                 startActivity(new Intent(SplashActivity.this, LoginActivity.class));

@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import com.example.medimind.R;
 import com.example.medimind.ui.HelperClasses.Patient;
-import com.example.medimind.ui.base.BaseActivity;
+import com.example.medimind.ui.base.BaseDetailsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class PatientInfoActivity extends BaseActivity {
+public class PatientInfoActivity extends BaseDetailsActivity {
 
     private ImageView btnBack, imgAvatar;
     private Button btnInfo;
@@ -27,15 +27,27 @@ public class PatientInfoActivity extends BaseActivity {
     private FirebaseAuth auth;
     private FirebaseFirestore db;
 
+    private void setupBackButton() {
+        android.widget.ImageView btnBack = findViewById(R.id.btnBack);
+        if (btnBack == null) return;
+
+        btnBack.setVisibility(android.view.View.VISIBLE);
+        btnBack.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
+    }
+
     @Override
-    protected int getActiveNavId() {
-        return R.id.navPatients; // ✅ لأنه ضمن تبويب Patients
+    protected String getScreenTitle() {
+        return "Patient Information";
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentLayout(R.layout.activity_patient_info);
+        setupBackButton();
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -116,8 +128,16 @@ public class PatientInfoActivity extends BaseActivity {
                     tvNameTop.setText(name);
                     tvMrn.setText(shownMrn);
                     tvNameRow.setText(name);
-                    tvAge.setText(age > 0 ? (age + " years") : "—");
+                    tvAge.setText(age  + " years");
                     tvGender.setText(gender);
+                    // Avatar based on gender
+                    if (gender.equalsIgnoreCase("female")) {
+                        imgAvatar.setImageResource(R.drawable.ic_female);
+                    }
+                    else {
+                        imgAvatar.setImageResource(R.drawable.ic_male);
+                    }
+
                     tvCreatedDate.setText(createdDate);
                     tvLastUpdate.setText(lastUpdate);
 

@@ -20,7 +20,6 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:src="@drawable/ic_patients"
-            android:background="@drawable/bg_circle_grey"
             android:scaleType="centerCrop"
             android:contentDescription="@null"
             app:layout_constraintTop_toTopOf="parent"

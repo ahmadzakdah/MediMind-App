@@ -15,7 +15,7 @@ import com.example.medimind.R;
 
 import androidx.core.widget.NestedScrollView;
 
-import com.example.medimind.ui.base.BaseActivity;
+import com.example.medimind.ui.base.BaseDetailsActivity;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class CreateMedicalRecordActivity extends BaseActivity {
+public class CreateMedicalRecordActivity extends BaseDetailsActivity {
 
     private TextInputLayout tilMrn, tilName, tilAge, tilGender;
     private TextInputEditText etMrn, etName, etAge, etMeds, etSurgeries, etAllergies, etFamily;
@@ -41,12 +41,19 @@ public class CreateMedicalRecordActivity extends BaseActivity {
     private FirebaseFirestore db;
 
     @Override
-    protected int getActiveNavId() {
-        return R.id.navHome;
-    }
-    @Override
     protected String getScreenTitle() {
         return "Create Medical Record";
+    }
+
+    private void setupBackButton() {
+        android.widget.ImageView btnBack = findViewById(R.id.btnBack);
+        if (btnBack == null) return;
+
+        btnBack.setVisibility(android.view.View.VISIBLE);
+        btnBack.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
     }
 
 
@@ -54,6 +61,8 @@ public class CreateMedicalRecordActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentLayout(R.layout.activity_create_medical_record);
+        setupBackButton();
+
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();

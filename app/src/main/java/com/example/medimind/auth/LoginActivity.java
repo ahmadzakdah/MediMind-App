@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.medimind.R;
-import com.example.medimind.ui.SearchActivity;
+import com.example.medimind.ui.MainActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -122,6 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                     showLoading(false);
                     showError("Email or Password is incorrect");
                 });
+
     }
 
     private void setupGoogle() {
@@ -225,7 +226,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void goMain() {
-        Intent i = new Intent(this, SearchActivity.class);
+        Intent i = new Intent(this, MainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
         finish();

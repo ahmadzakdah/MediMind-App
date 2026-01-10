@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent">
@@ -45,6 +46,8 @@
                 app:boxCornerRadiusBottomStart="14dp"
                 app:boxCornerRadiusTopEnd="14dp"
                 app:boxCornerRadiusTopStart="14dp"
+                app:startIconDrawable="@drawable/ic_search"
+                app:startIconTint="#777777"
                 app:layout_constraintTop_toBottomOf="@id/tvSearchTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -54,10 +57,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Patient name or MRN"
-                    android:inputType="text"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"/>
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
+
 
             <Button
                 android:id="@+id/btnSearch"
@@ -66,6 +68,7 @@
                 android:layout_marginTop="14dp"
                 android:text="Search"
                 android:textAllCaps="false"
+                android:textSize="18dp"
                 android:textStyle="bold"
                 android:backgroundTint="#3D008F"
                 android:textColor="@android:color/white"
@@ -81,6 +84,7 @@
                 android:layout_marginTop="12dp"
                 android:text="Create medical record"
                 android:textAllCaps="false"
+                android:textSize="18dp"
                 android:textStyle="bold"
                 android:backgroundTint="#00BFA6"
                 android:textColor="@android:color/white"

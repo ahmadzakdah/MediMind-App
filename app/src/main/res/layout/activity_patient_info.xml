@@ -36,11 +36,11 @@
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:padding="8dp"
+                    android:background="@drawable/bg_back_circle"
                     android:src="@drawable/ic_back"
+                    app:tint="#3D008F"
                     android:contentDescription="@null"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:tint="#3D008F" />
+                    tools:ignore="MissingConstraints" />
 
                 <!-- Avatar -->
                 <com.google.android.material.card.MaterialCardView
@@ -60,7 +60,7 @@
                         android:id="@+id/imgAvatar"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/avatar"
+                        android:src="@drawable/ic_male"
                         android:scaleType="centerCrop"
                         android:contentDescription="@null"/>
                 </com.google.android.material.card.MaterialCardView>

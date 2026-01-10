@@ -1,76 +1,75 @@
-package com.example.medimind.ui;
+package com.example.medimind.ui.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medimind.R;
-import com.example.medimind.ui.HelperClasses.PatientListAdapter;
-import com.example.medimind.ui.base.BaseActivity;
+import com.example.medimind.ui.PatientInfoActivity;
+import com.example.medimind.ui.HelperClasses.PatientsAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientsActivity extends BaseActivity {
+public class PatientsFragment extends Fragment {
 
     private RecyclerView rvPatients;
-    private LinearLayout layoutEmptyState;
+    private LinearLayout empty;
 
-    private PatientListAdapter adapter;
+    private PatientsAdapter adapter;
 
     private FirebaseAuth auth;
     private FirebaseFirestore db;
 
+    @Nullable
     @Override
-    protected int getActiveNavId() {
-        return R.id.navPatients;
-    }
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
-    @Override
-    protected String getScreenTitle() {
-        return "Patients";
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentLayout(R.layout.activity_patients);
+        View view = inflater.inflate(R.layout.fragment_patients, container, false);
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        rvPatients = findViewById(R.id.rvPatientsAll);
-        layoutEmptyState = findViewById(R.id.layoutEmptyPatients);
+        rvPatients = view.findViewById(R.id.rvPatientsAll);
+        empty = view.findViewById(R.id.layoutEmptyPatients);
 
-        rvPatients.setLayoutManager(new LinearLayoutManager(this));
+        rvPatients.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        adapter = new PatientListAdapter(patient -> {
-            Intent i = new Intent(PatientsActivity.this, PatientInfoActivity.class);
-            i.putExtra("mrn", patient.mrn);
+        adapter = new PatientsAdapter(p -> {
+            Intent i = new Intent(requireContext(), PatientInfoActivity.class);
+            i.putExtra("mrn", p.mrn);
             startActivity(i);
         });
 
         rvPatients.setAdapter(adapter);
 
         loadPatients();
+
+        return view;
     }
 
     private void loadPatients() {
         String doctorUid = (auth.getCurrentUser() != null) ? auth.getCurrentUser().getUid() : null;
         if (doctorUid == null) {
-            Toast.makeText(this, "Please login first.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Please login first.", Toast.LENGTH_SHORT).show();
             showEmpty();
             return;
         }
 
-        // إذا عندك حقل nameLower زي ما مستخدم بالبحث: ممتاز نرتب عليه
         db.collection("doctors")
                 .document(doctorUid)
                 .collection("patients")
@@ -84,7 +83,7 @@ public class PatientsActivity extends BaseActivity {
                         return;
                     }
 
-                    List<PatientListAdapter.PatientRow> list = new ArrayList<>();
+                    List<PatientsAdapter.PatientRow> list = new ArrayList<>();
 
                     for (com.google.firebase.firestore.DocumentSnapshot doc : snap.getDocuments()) {
                         String mrn = doc.getString("medicalRecordNumber");
@@ -92,11 +91,10 @@ public class PatientsActivity extends BaseActivity {
 
                         String name = doc.getString("name");
                         String gender = doc.getString("gender");
-
                         Long ageL = doc.getLong("age");
                         int age = (ageL != null) ? ageL.intValue() : 0;
 
-                        list.add(new PatientListAdapter.PatientRow(
+                        list.add(new PatientsAdapter.PatientRow(
                                 mrn,
                                 name != null ? name : ("MRN " + mrn),
                                 gender != null ? gender : "—",
@@ -108,18 +106,18 @@ public class PatientsActivity extends BaseActivity {
                     showList();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     showEmpty();
                 });
     }
 
     private void showEmpty() {
-        layoutEmptyState.setVisibility(View.VISIBLE);
+        empty.setVisibility(View.VISIBLE);
         rvPatients.setVisibility(View.GONE);
     }
 
     private void showList() {
-        layoutEmptyState.setVisibility(View.GONE);
+        empty.setVisibility(View.GONE);
         rvPatients.setVisibility(View.VISIBLE);
     }
 }
