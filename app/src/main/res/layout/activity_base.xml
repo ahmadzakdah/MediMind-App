@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#3D008F">
+
+    <!-- ✅ Header ثابت -->
+    <LinearLayout
+        android:id="@+id/headerRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:contentDescription="@null"
+            android:src="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/tvAppTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="MediMind"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- ✅ عنوان الشاشة (يتغير حسب الصفحة) -->
+    <TextView
+        android:id="@+id/tvScreenTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="Home"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/headerRow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- ✅ Container: هنا بنحط محتوى أي صفحة -->
+    <FrameLayout
+        android:id="@+id/baseContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/tvScreenTitle"
+        app:layout_constraintBottom_toTopOf="@id/bottomCard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- ✅ Bottom Nav (النسخة المحسنة تبعتنا) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/bottomCard"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="12dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <!-- Home -->
+            <LinearLayout
+                android:id="@+id/navHome"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <View
+                    android:id="@+id/indicatorHome"
+                    android:layout_width="26dp"
+                    android:layout_height="4dp"
+                    android:background="#3D008F"
+                    android:visibility="visible"/>
+
+                <ImageView
+                    android:id="@+id/iconHome"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginTop="6dp"
+                    android:src="@drawable/ic_home"
+                    app:tint="#3D008F" />
+
+                <TextView
+                    android:id="@+id/textHome"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Home"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#3D008F"/>
+            </LinearLayout>
+
+            <!-- Patients -->
+            <LinearLayout
+                android:id="@+id/navPatients"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <View
+                    android:id="@+id/indicatorPatients"
+                    android:layout_width="26dp"
+                    android:layout_height="4dp"
+                    android:background="#3D008F"
+                    android:visibility="invisible"/>
+
+                <ImageView
+                    android:id="@+id/iconPatients"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginTop="6dp"
+                    android:src="@drawable/ic_patients"
+                    app:tint="#999999" />
+
+                <TextView
+                    android:id="@+id/textPatients"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Patients"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#999999"/>
+            </LinearLayout>
+
+            <!-- Profile -->
+            <LinearLayout
+                android:id="@+id/navProfile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <View
+                    android:id="@+id/indicatorProfile"
+                    android:layout_width="26dp"
+                    android:layout_height="4dp"
+                    android:background="#3D008F"
+                    android:visibility="invisible"/>
+
+                <ImageView
+                    android:id="@+id/iconProfile"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginTop="6dp"
+                    android:src="@drawable/ic_user"
+                    app:tint="#999999" />
+
+                <TextView
+                    android:id="@+id/textProfile"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Profile"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#999999"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
