@@ -22,6 +22,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -52,7 +53,6 @@ public class CreateMedicalRecordActivity extends BaseDetailsActivity {
         btnBack.setVisibility(android.view.View.VISIBLE);
         btnBack.setOnClickListener(v -> {
             finish();
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
     }
 
@@ -276,10 +276,29 @@ public class CreateMedicalRecordActivity extends BaseDetailsActivity {
                     nowMillis
             );
 
-            // save patient
-            transaction.set(patientRef, patient);
 
-            // increment counter
+                    // save patient
+                    transaction.set(patientRef, patient);
+
+                    // ✅ archive flags (default)
+                    HashMap<String, Object> arch = new HashMap<>();
+                    arch.put("archived", false);
+                    arch.remove("archivedAt");
+                    transaction.set(patientRef, arch, SetOptions.merge());
+
+
+                    DocumentReference statsRef =
+                            db.collection("doctors")
+                                    .document(doctorUid)
+                                    .collection("meta")
+                                    .document("stats");
+
+                    transaction.set(statsRef, new HashMap<String, Object>() {{
+                        put("patientsCount", FieldValue.increment(1));
+                    }}, SetOptions.merge());
+
+
+                    // increment counter
             HashMap<String, Object> update = new HashMap<>();
             update.put("nextMrn", nextMrn + 1);
 

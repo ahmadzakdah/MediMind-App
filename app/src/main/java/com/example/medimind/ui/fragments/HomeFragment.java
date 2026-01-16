@@ -26,11 +26,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 public class HomeFragment extends Fragment {
-
     private TextInputLayout tilSearch;
     private TextInputEditText etSearch;
     private Button btnSearch, btnCreateRecord;
@@ -41,6 +41,21 @@ public class HomeFragment extends Fragment {
 
     private FirebaseAuth auth;
     private FirebaseFirestore db;
+
+    private void ensureStatsDoc() {
+        String uid = (auth.getCurrentUser() != null) ? auth.getCurrentUser().getUid() : null;
+        if (uid == null) return;
+
+        HashMap<String, Object> init = new HashMap<>();
+        init.put("patientsCount", 0L);
+        init.put("consultationsCount", 0L);
+
+        db.collection("doctors")
+                .document(uid)
+                .collection("meta")
+                .document("stats")
+                .set(init, com.google.firebase.firestore.SetOptions.merge());
+    }
 
     @Nullable
     @Override
@@ -53,10 +68,12 @@ public class HomeFragment extends Fragment {
         // Firebase
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        ensureStatsDoc();
 
         // Bind (لاحظ: view.findViewById)
         tilSearch = view.findViewById(R.id.tilSearch);
         etSearch = view.findViewById(R.id.etSearch);
+
         btnSearch = view.findViewById(R.id.btnSearch);
         btnCreateRecord = view.findViewById(R.id.btnCreateRecord);
         layoutEmptyState = view.findViewById(R.id.layoutEmptyState);
@@ -68,6 +85,10 @@ public class HomeFragment extends Fragment {
             Intent i = new Intent(requireContext(), PatientInfoActivity.class);
             i.putExtra("mrn", patient.mrn);
             startActivity(i);
+            requireActivity().overridePendingTransition(
+                    android.R.anim.fade_in,
+                    android.R.anim.fade_out
+            );
         });
 
         rvPatients.setAdapter(adapter);

@@ -89,7 +89,7 @@
                     android:layout_height="42dp"
                     android:layout_marginTop="8dp"
                     android:backgroundTint="#00BFA6"
-                    android:text="Consultation History"
+                    android:text="Start New Consultation"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
                     android:textSize="16dp"
@@ -100,6 +100,25 @@
                     app:layout_constraintTop_toBottomOf="@id/tvName"
                     app:strokeColor="#3D008F"
                     app:strokeWidth="2dp" />
+                <!-- Consultation History link -->
+                <TextView
+                    android:id="@+id/tvHistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Consultation History?"
+                    android:textColor="#3D008F"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    app:layout_constraintTop_toBottomOf="@id/btnInfo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+
 
                 <!-- Inner rounded container for the table -->
                 <com.google.android.material.card.MaterialCardView
@@ -112,7 +131,7 @@
                     app:cardBackgroundColor="#FFFFFF"
                     app:strokeColor="#E8E8E8"
                     app:strokeWidth="1dp"
-                    app:layout_constraintTop_toBottomOf="@id/btnInfo"
+                    app:layout_constraintTop_toBottomOf="@id/tvHistory"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
 
@@ -437,6 +456,27 @@
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="102dp"
+                    android:layout_height="110dp"
+                    app:layout_constraintBottom_toTopOf="@+id/tvName"
+                    app:layout_constraintEnd_toStartOf="@+id/cardAvatar"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:srcCompat="@drawable/plant2" />
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="102dp"
+                    android:layout_height="110dp"
+                    android:layout_marginBottom="44dp"
+                    app:layout_constraintBottom_toTopOf="@+id/tvName"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/cardAvatar"
+                    app:srcCompat="@drawable/risha" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

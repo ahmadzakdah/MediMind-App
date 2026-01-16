@@ -34,11 +34,17 @@ public class PatientsAdapter extends RecyclerView.Adapter<PatientsAdapter.VH> {
         void onClick(PatientRow patient);
     }
 
+    public interface OnArchiveClick {
+        void onArchive(PatientRow patient);
+    }
+
     private final OnPatientClick onClick;
+    private final OnArchiveClick onArchive;
     private final List<PatientRow> items = new ArrayList<>();
 
-    public PatientsAdapter(OnPatientClick onClick) {
+    public PatientsAdapter(OnPatientClick onClick, OnArchiveClick onArchive) {
         this.onClick = onClick;
+        this.onArchive = onArchive;
     }
 
     public void setItems(List<PatientRow> list) {
@@ -61,11 +67,18 @@ public class PatientsAdapter extends RecyclerView.Adapter<PatientsAdapter.VH> {
         h.tvPatientName.setText(p.name);
         h.tvPatientInfo.setText(p.gender + " • " + p.age + " years • MRN " + p.mrn);
 
+        if ("Female".equalsIgnoreCase(p.gender))
+            h.imgPatient.setImageResource(R.drawable.ic_female);
+        else
+            h.imgPatient.setImageResource(R.drawable.ic_male);
 
-        if ("Female".equalsIgnoreCase(p.gender)) h.imgPatient.setImageResource(R.drawable.ic_female);
-        else h.imgPatient.setImageResource(R.drawable.ic_male);
-
+        // open patient
         h.itemView.setOnClickListener(v -> onClick.onClick(p));
+
+        // archive button (حماية بسيطة)
+        if (h.btnArchive != null) {
+            h.btnArchive.setOnClickListener(v -> onArchive.onArchive(p));
+        }
     }
 
     @Override
@@ -75,7 +88,7 @@ public class PatientsAdapter extends RecyclerView.Adapter<PatientsAdapter.VH> {
 
     static class VH extends RecyclerView.ViewHolder {
 
-        ImageView imgPatient;
+        ImageView imgPatient, btnArchive;
         TextView tvPatientName, tvPatientInfo;
 
         VH(@NonNull View itemView) {
@@ -83,6 +96,7 @@ public class PatientsAdapter extends RecyclerView.Adapter<PatientsAdapter.VH> {
             imgPatient = itemView.findViewById(R.id.imgPatient);
             tvPatientName = itemView.findViewById(R.id.tvPatientName);
             tvPatientInfo = itemView.findViewById(R.id.tvPatientInfo);
+            btnArchive = itemView.findViewById(R.id.btnArchive);
         }
     }
 }

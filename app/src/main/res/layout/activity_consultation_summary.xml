@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardRoot"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <!-- Title -->
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Prediction Summary"
+                    android:textColor="#3D008F"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Patient Meta (Age + Gender) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardPatientMeta"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#E6E6E6"
+                    app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="14dp">
+
+                        <!-- Age -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Age"
+                                android:textColor="#6B6B6B"
+                                android:textSize="12sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/tvSummaryAgeValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="—"
+                                android:textColor="#3D008F"
+                                android:textSize="14sp"
+                                android:textStyle="bold"/>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="12dp"
+                            android:background="#EEEAF5"/>
+
+                        <!-- Gender -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Gender"
+                                android:textColor="#6B6B6B"
+                                android:textSize="12sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/tvSummaryGenderValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="—"
+                                android:textColor="#3D008F"
+                                android:textSize="14sp"
+                                android:textStyle="bold"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <!-- Symptoms Summary -->
+                <TextView
+                    android:id="@+id/tvSymptomsTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Symptoms"
+                    android:textColor="#3D008F"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/cardPatientMeta"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardSymptoms"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#E6E6E6"
+                    app:layout_constraintTop_toBottomOf="@id/tvSymptomsTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/txtSymptomsList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="14dp"
+                        android:text="Itching • Skin rash • Malaise"
+                        android:textColor="#6D45C6"
+                        android:textSize="13sp"
+                        android:lineSpacingExtra="2dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Predicted Disease -->
+                <TextView
+                    android:id="@+id/tvPredTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="Predicted Disease"
+                    android:textColor="#3D008F"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/cardSymptoms"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardResult"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#E6E6E6"
+                    app:layout_constraintTop_toBottomOf="@id/tvPredTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <!-- Row 1 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/txtDisease1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Fungal Infection"
+                                android:textColor="#3D008F"
+                                android:textStyle="bold"
+                                android:textSize="14sp"/>
+
+                            <TextView
+                                android:id="@+id/txtProb1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="39%"
+                                android:textColor="#3D008F"
+                                android:textStyle="bold"
+                                android:textSize="14sp"/>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="8dp"/>
+
+                        <!-- Row 2 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/txtDisease2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Drug Reaction"
+                                android:textColor="#6D45C6"
+                                android:textSize="13sp"/>
+
+                            <TextView
+                                android:id="@+id/txtProb2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="22%"
+                                android:textColor="#6D45C6"
+                                android:textSize="13sp"/>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp"/>
+
+                        <!-- Row 3 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/txtDisease3"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Chicken Pox"
+                                android:textColor="#6D45C6"
+                                android:textSize="13sp"/>
+
+                            <TextView
+                                android:id="@+id/txtProb3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="14%"
+                                android:textColor="#6D45C6"
+                                android:textSize="13sp"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Vitals -->
+                <TextView
+                    android:id="@+id/tvVitalsTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="Vitals"
+                    android:textColor="#3D008F"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/cardResult"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardVitals"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#E6E6E6"
+                    app:layout_constraintTop_toBottomOf="@id/tvVitalsTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="14dp">
+
+                        <!-- BP -->
+                        <TextView
+                            android:id="@+id/tvBpLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="BP"
+                            android:textStyle="bold"
+                            android:textColor="#3D008F"
+                            android:textSize="12sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/vitalsDividerV"
+                            app:layout_constraintWidth_percent="0.48"/>
+
+                        <TextView
+                            android:id="@+id/txtBpValue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="—"
+                            android:textColor="#6D45C6"
+                            android:textSize="13sp"
+                            app:layout_constraintStart_toStartOf="@id/tvBpLabel"
+                            app:layout_constraintTop_toBottomOf="@id/tvBpLabel"
+                            app:layout_constraintEnd_toEndOf="@id/tvBpLabel"/>
+
+                        <!-- HR -->
+                        <TextView
+                            android:id="@+id/tvHrLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="HR"
+                            android:textStyle="bold"
+                            android:textColor="#3D008F"
+                            android:textSize="12sp"
+                            app:layout_constraintStart_toEndOf="@id/vitalsDividerV"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                        <TextView
+                            android:id="@+id/txtHrValue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="—"
+                            android:textColor="#6D45C6"
+                            android:textSize="13sp"
+                            app:layout_constraintStart_toStartOf="@id/tvHrLabel"
+                            app:layout_constraintTop_toBottomOf="@id/tvHrLabel"
+                            app:layout_constraintEnd_toEndOf="@id/tvHrLabel"/>
+
+                        <!-- divider vertical -->
+                        <View
+                            android:id="@+id/vitalsDividerV"
+                            android:layout_width="1dp"
+                            android:layout_height="0dp"
+                            android:background="#EEEEEE"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                        <!-- divider horizontal -->
+                        <View
+                            android:id="@+id/vitalsDividerH"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="12dp"
+                            android:background="#EEEEEE"
+                            app:layout_constraintTop_toBottomOf="@id/txtBpValue"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                        <!-- RR -->
+                        <TextView
+                            android:id="@+id/tvRrLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="RR"
+                            android:textStyle="bold"
+                            android:textColor="#3D008F"
+                            android:textSize="12sp"
+                            app:layout_constraintTop_toBottomOf="@id/vitalsDividerH"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/vitalsDividerV"
+                            app:layout_constraintWidth_percent="0.48"/>
+
+                        <TextView
+                            android:id="@+id/txtRrValue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="—"
+                            android:textColor="#6D45C6"
+                            android:textSize="13sp"
+                            app:layout_constraintStart_toStartOf="@id/tvRrLabel"
+                            app:layout_constraintTop_toBottomOf="@id/tvRrLabel"
+                            app:layout_constraintEnd_toEndOf="@id/tvRrLabel"/>
+
+                        <!-- SpO2 -->
+                        <TextView
+                            android:id="@+id/tvSpo2Label"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="SpO₂"
+                            android:textStyle="bold"
+                            android:textColor="#3D008F"
+                            android:textSize="12sp"
+                            app:layout_constraintTop_toBottomOf="@id/vitalsDividerH"
+                            app:layout_constraintStart_toEndOf="@id/vitalsDividerV"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                        <TextView
+                            android:id="@+id/txtSpo2Value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="—"
+                            android:textColor="#6D45C6"
+                            android:textSize="13sp"
+                            app:layout_constraintStart_toStartOf="@id/tvSpo2Label"
+                            app:layout_constraintTop_toBottomOf="@id/tvSpo2Label"
+                            app:layout_constraintEnd_toEndOf="@id/tvSpo2Label"/>
+
+                        <!-- Sugar -->
+                        <TextView
+                            android:id="@+id/tvSugarLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Blood Sugar"
+                            android:textStyle="bold"
+                            android:textColor="#3D008F"
+                            android:textSize="12sp"
+                            app:layout_constraintTop_toBottomOf="@id/txtRrValue"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/vitalsDividerV"
+                            app:layout_constraintWidth_percent="0.48"/>
+
+                        <TextView
+                            android:id="@+id/txtSugarValue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="—"
+                            android:textColor="#6D45C6"
+                            android:textSize="13sp"
+                            app:layout_constraintStart_toStartOf="@id/tvSugarLabel"
+                            app:layout_constraintTop_toBottomOf="@id/tvSugarLabel"
+                            app:layout_constraintEnd_toEndOf="@id/tvSugarLabel"/>
+
+                        <!-- Temp -->
+                        <TextView
+                            android:id="@+id/tvTempLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Temp"
+                            android:textStyle="bold"
+                            android:textColor="#3D008F"
+                            android:textSize="12sp"
+                            app:layout_constraintTop_toBottomOf="@id/txtSpo2Value"
+                            app:layout_constraintStart_toEndOf="@id/vitalsDividerV"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                        <TextView
+                            android:id="@+id/txtTempValue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="—"
+                            android:textColor="#6D45C6"
+                            android:textSize="13sp"
+                            app:layout_constraintStart_toStartOf="@id/tvTempLabel"
+                            app:layout_constraintTop_toBottomOf="@id/tvTempLabel"
+                            app:layout_constraintEnd_toEndOf="@id/tvTempLabel"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+
+
+
+                <!-- Description -->
+                <TextView
+                    android:id="@+id/tvDescTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="Description"
+                    android:textColor="#3D008F"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@id/cardVitals"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/txtDescription"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="—"
+                    android:textColor="#6D45C6"
+                    android:textSize="13sp"
+                    android:lineSpacingExtra="2dp"
+                    app:layout_constraintTop_toBottomOf="@id/tvDescTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Instructions -->
+                <TextView
+                    android:id="@+id/tvInstTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="Instructions"
+                    android:textColor="#3D008F"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@id/txtDescription"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/txtInstructions"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="—"
+                    android:textColor="#6D45C6"
+                    android:textSize="13sp"
+                    android:lineSpacingExtra="2dp"
+                    app:layout_constraintTop_toBottomOf="@id/tvInstTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Notes (Optional) -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilNotes"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    app:boxBackgroundColor="#F0F0F0"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:layout_constraintTop_toBottomOf="@id/txtInstructions"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etNotes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Notes (optional)"
+                        android:inputType="textMultiLine"
+                        android:minLines="2"
+                        android:maxLines="5"
+                        android:textColor="#333333"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Buttons Row -->
+                <LinearLayout
+                    android:id="@+id/rowButtons"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    app:layout_constraintTop_toBottomOf="@id/tilNotes"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+                    <Button
+                        android:id="@+id/btnDiscard"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:text="Discard"
+                        android:textAllCaps="false"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:textColor="@android:color/white"
+                        app:backgroundTint="#E53935"
+                        android:elevation="4dp"/>
+                    <View
+                        android:layout_width="12dp"
+                        android:layout_height="1dp"/>
+
+                    <Button
+                        android:id="@+id/btnSaveClose"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:text="@string/save_close"
+                        android:textAllCaps="false"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:textColor="@android:color/white"
+                        app:backgroundTint="#00C4B4"
+                        android:elevation="4dp"/>
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

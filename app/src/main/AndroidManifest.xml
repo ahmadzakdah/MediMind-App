@@ -11,28 +11,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MediMindV2"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.ProfileActivity"
+            android:name=".ui.ConsultationHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.ConsultationSummaryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.CreateConsultationActivity"
             android:exported="false" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.PatientsActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.PatientInfoActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.base.BaseActivity"
             android:exported="false" />
         <activity
             android:name=".ui.CreateMedicalRecordActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.SearchActivity"
-            android:exported="false" /> <!-- Splash: هي اللي بتقرر تروح على Login أو Main حسب حالة تسجيل الدخول -->
         <activity
             android:name=".auth.SplashActivity"
             android:exported="true">

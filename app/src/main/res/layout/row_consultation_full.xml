@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="14dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="#E9E2FF"
+    app:cardBackgroundColor="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="14dp"
+        android:orientation="vertical">
+
+        <!-- Header (Date + Top disease) -->
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="—"
+            android:textColor="#6A5A89"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tvTopDisease"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="—"
+            android:textColor="#3D008F"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <!-- Table container -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#EFE8FF"
+            app:cardBackgroundColor="#FFFFFF">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <!-- Row: Age -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.1"
+                        android:padding="10dp"
+                        android:text="Age"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:textSize="13sp"
+                        android:background="#3D008F"/>
+
+                    <TextView
+                        android:id="@+id/tvAge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:text="—"
+                        android:textColor="#3D008F"
+                        android:textStyle="bold"
+                        android:textSize="13sp"
+                        android:background="#F4F1FF"/>
+                </LinearLayout>
+
+                <!-- Row: Gender -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.1"
+                        android:padding="10dp"
+                        android:text="Gender"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:textSize="13sp"
+                        android:background="#3D008F"/>
+
+                    <TextView
+                        android:id="@+id/tvGender"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:text="—"
+                        android:textColor="#3D008F"
+                        android:textStyle="bold"
+                        android:textSize="13sp"
+                        android:background="#F4F1FF"/>
+                </LinearLayout>
+
+                <!-- Row: Vitals (multiline box) -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Vitals"
+                    android:textColor="#3D008F"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:layout_marginTop="2dp"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#EDE7FF"
+                    app:cardBackgroundColor="#FAF8FF">
+
+                    <TextView
+                        android:id="@+id/tvVitals"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:text="—"
+                        android:textColor="#6A5A89"
+                        android:textSize="13sp"
+                        android:lineSpacingExtra="2dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Symptoms -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Symptoms"
+                    android:textColor="#3D008F"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:layout_marginTop="12dp"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#EDE7FF"
+                    app:cardBackgroundColor="#FAF8FF">
+
+                    <TextView
+                        android:id="@+id/tvSymptoms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:text="—"
+                        android:textColor="#6A5A89"
+                        android:textSize="13sp"
+                        android:lineSpacingExtra="2dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Predicted -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Predicted Diseases"
+                    android:textColor="#3D008F"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:layout_marginTop="12dp"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#EDE7FF"
+                    app:cardBackgroundColor="#FAF8FF">
+
+                    <TextView
+                        android:id="@+id/tvPredicted"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:text="—"
+                        android:textColor="#6A5A89"
+                        android:textSize="13sp"
+                        android:lineSpacingExtra="2dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Notes -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Notes"
+                    android:textColor="#3D008F"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:layout_marginTop="12dp"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#EDE7FF"
+                    app:cardBackgroundColor="#FAF8FF">
+
+                    <TextView
+                        android:id="@+id/tvNotes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:text="—"
+                        android:textColor="#6A5A89"
+                        android:textSize="13sp"
+                        android:lineSpacingExtra="2dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

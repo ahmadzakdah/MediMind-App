@@ -1,5 +1,6 @@
 package com.example.medimind.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,6 +18,9 @@ import java.util.Date;
 import java.util.Locale;
 
 public class PatientInfoActivity extends BaseDetailsActivity {
+    public static final String EXTRA_MRN = "mrn";
+    public static final String EXTRA_AGE = "extra_age";
+    public static final String EXTRA_GENDER = "extra_gender"; // "Male"/"Female" أو 0/1 حسب ما عندك
 
     private ImageView btnBack, imgAvatar;
     private Button btnInfo;
@@ -27,16 +31,10 @@ public class PatientInfoActivity extends BaseDetailsActivity {
     private FirebaseAuth auth;
     private FirebaseFirestore db;
 
-    private void setupBackButton() {
-        android.widget.ImageView btnBack = findViewById(R.id.btnBack);
-        if (btnBack == null) return;
+    private int patientAge = -1;
+    private String patientGender = "";
+    private String patientMrn = "";
 
-        btnBack.setVisibility(android.view.View.VISIBLE);
-        btnBack.setOnClickListener(v -> {
-            finish();
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        });
-    }
 
     @Override
     protected String getScreenTitle() {
@@ -47,8 +45,6 @@ public class PatientInfoActivity extends BaseDetailsActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentLayout(R.layout.activity_patient_info);
-        setupBackButton();
-
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
@@ -69,8 +65,37 @@ public class PatientInfoActivity extends BaseDetailsActivity {
         tvAllergies = findViewById(R.id.tvAllergies);
         tvFamily = findViewById(R.id.tvFamily);
 
-        btnBack.setOnClickListener(v -> finish());
-        btnInfo.setOnClickListener(v -> Toast.makeText(this, "Info", Toast.LENGTH_SHORT).show());
+        btnBack.setVisibility(android.view.View.VISIBLE);
+        btnBack.setOnClickListener(v -> {
+            finish();
+        });
+        btnInfo.setEnabled(false);
+        btnInfo.setOnClickListener(v -> {
+            if (patientMrn == null || patientMrn.trim().isEmpty()) {
+                Toast.makeText(this, "Missing MRN", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Intent intent = new Intent(this, CreateConsultationActivity.class);
+            intent.putExtra(EXTRA_MRN, patientMrn);
+            intent.putExtra(EXTRA_AGE, patientAge);
+            intent.putExtra(EXTRA_GENDER, patientGender);
+            startActivity(intent);
+
+        });
+
+        TextView tvHistory = findViewById(R.id.tvHistory);
+        tvHistory.setOnClickListener(v -> {
+            if (patientMrn == null || patientMrn.trim().isEmpty()) {
+                Toast.makeText(this, "Missing MRN", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Intent i = new Intent(this, ConsultationHistoryActivity.class);
+            i.putExtra(ConsultationHistoryActivity.EXTRA_MRN, patientMrn);
+            startActivity(i);
+        });
+
+
 
         String mrn = getIntent().getStringExtra("mrn");
         if (mrn == null || mrn.trim().isEmpty()) {
@@ -114,6 +139,11 @@ public class PatientInfoActivity extends BaseDetailsActivity {
 
                     int age = (p != null) ? p.getAge() : 0;
                     String gender = (p != null && notEmpty(p.getGender())) ? p.getGender() : "—";
+
+                    patientMrn = shownMrn;
+                    patientAge = age;
+                    patientGender = gender;
+
                     String createdDate = (p != null && notEmpty(p.getRecordCreationDate())) ? p.getRecordCreationDate() : "—";
 
                     String meds = (p != null && notEmpty(p.getCurrentMedications())) ? formatBullets(p.getCurrentMedications()) : "—";
@@ -145,6 +175,8 @@ public class PatientInfoActivity extends BaseDetailsActivity {
                     tvSurgeries.setText(surgeries);
                     tvAllergies.setText(allergies);
                     tvFamily.setText(family);
+                    btnInfo.setEnabled(true);
+
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -173,4 +205,6 @@ public class PatientInfoActivity extends BaseDetailsActivity {
         }
         return sb.toString().trim();
     }
-}
+    }
+
+

@@ -1,0 +1,42 @@
+Disease,Inst_1,Inst_2,Inst_3
+Osteoarthristis,Diagnose with clinical assessment and confirm with X-ray showing joint space narrowing and osteophytes.,Start NSAIDs for pain management and recommend physical therapy.,Consider joint injections or orthopedic referral for severe cases.
+Arthritis,Evaluate joint pain and stiffness; order inflammatory markers and imaging.,Begin treatment with NSAIDs; consider DMARDs if autoimmune etiology suspected.,Refer to rheumatology for further management and long-term care.
+(vertigo) Paroymsal  Positional Vertigo,Confirm diagnosis with Dix-Hallpike maneuver.,Perform canalith repositioning maneuvers (Epley maneuver).,Educate on recurrence and safety precautions; follow-up if persistent.
+Hypoglycemia,Check blood glucose level immediately when symptoms appear.,Administer oral glucose or IV dextrose if unconscious.,Adjust diabetic regimen to prevent recurrence; educate on symptom recognition.
+Hyperthyroidism,Confirm with suppressed TSH and elevated T3/T4; consider thyroid scan.,"Start beta-blockers for symptom control and antithyroid drugs (e.g., methimazole).",Consider radioactive iodine therapy or surgery in refractory cases.
+Migraine,Diagnose based on clinical criteria; rule out secondary causes with imaging if red flags exist.,Use NSAIDs or triptans for acute attacks; start prophylactic treatment if frequent.,Advise lifestyle modifications and trigger avoidance.
+Cervical spondylosis,Diagnose with neck X-ray or MRI for nerve root compression.,"Initiate physical therapy, NSAIDs, and cervical collar if needed.",Refer to neurosurgery if there is myelopathy or failed conservative therapy.
+Paralysis (brain hemorrhage),Urgent CT scan to confirm hemorrhagic stroke; assess Glasgow Coma Scale.,"Admit to ICU, manage airway, and control blood pressure aggressively.",Start rehabilitation early and refer to neurology and physiotherapy.
+Jaundice,"Evaluate liver function tests, bilirubin levels, and abdominal ultrasound.","Treat underlying cause (e.g., hepatitis, obstruction).",Monitor liver enzymes and refer to hepatology if unresolved.
+Malaria,Confirm diagnosis with thick and thin blood smears or RDTs.,Administer ACT or IV artesunate for severe cases.,Monitor parasitemia and treat complications.
+Chicken pox,Diagnose clinically by vesicular rash with centripetal distribution.,Provide supportive care; give acyclovir if immunocompromised or adult.,Isolate patient and monitor for complications like pneumonia.
+Dengue,Confirm with NS1 antigen test or IgM serology; monitor CBC and hematocrit.,Ensure fluid replacement and avoid NSAIDs; use paracetamol for fever.,Monitor for warning signs of severe dengue and hospitalize if needed.
+Typhoid,Confirm with Widal test or blood culture.,Start appropriate antibiotics like ceftriaxone or azithromycin.,Monitor fever clearance and educate about hygiene and sanitation.
+Hepatitis A,Diagnose with anti-HAV IgM serology and liver function tests.,Supportive care including rest and hydration.,Educate on hygiene and prevention; no antivirals needed.
+Hepatitis B,"Test for HBsAg, HBeAg, and HBV DNA; assess liver enzymes.","Start antivirals (e.g., tenofovir) if chronic infection with high viral load.",Refer to hepatology and monitor for cirrhosis or liver cancer.
+Hepatitis C,Confirm with anti-HCV and HCV RNA PCR.,Initiate direct-acting antivirals (DAAs) for 8-12 weeks.,Monitor liver enzymes and fibrosis progression.
+Hepatitis D,Screen for co-infection with Hepatitis B; test anti-HDV antibodies.,Treat underlying HBV; interferon-alpha may be used in select cases.,Refer to hepatology for chronic cases; monitor liver function closely.
+Hepatitis E,Diagnose with anti-HEV IgM antibodies.,Supportive care; hospitalize if pregnant or liver function is severely impaired.,Ensure good hygiene and safe drinking water; no specific antiviral treatment.
+Alcoholic hepatitis,"Assess liver enzymes (AST>ALT), bilirubin, and Maddrey's discriminant function.",Encourage complete alcohol abstinence; consider corticosteroids if severe.,Refer to hepatologist; consider transplant evaluation if liver failure.
+Tuberculosis,Perform chest X-ray and confirm with sputum AFB or GeneXpert test.,"Initiate DOTS therapy (HRZE regimen) for 2 months, followed by continuation phase.",Ensure adherence and monitor for drug side effects and resistance.
+Common Cold,Diagnose clinically; no tests usually needed.,"Symptomatic treatment with fluids, rest, and antipyretics.",Educate on self-care and when to seek medical attention.
+Pneumonia,"Confirm with chest X-ray and assess vitals for severity (e.g., CURB-65).","Start empiric antibiotics (e.g., amoxicillin or macrolides).",Hospitalize if severe; reassess after 48â€“72 hours.
+Dimorphic hemorrhoids(piles),Diagnose with digital rectal exam and anoscopy.,Advise high-fiber diet; prescribe topical agents and sitz baths.,Refer for surgical evaluation if unresponsive to conservative treatment.
+Heart attack,ECG and cardiac enzymes to confirm diagnosis.,"Start MONA protocol: morphine, oxygen, nitrates, aspirin; consider PCI.",Admit to ICU and monitor; initiate long-term cardiac rehab.
+Varicose veins,Diagnose with Doppler ultrasound to assess venous insufficiency.,Recommend compression stockings and leg elevation.,Refer for surgical or endovenous ablation if symptomatic.
+Hypertension,Measure BP on multiple occasions; assess cardiovascular risk.,Initiate lifestyle changes and start ACE inhibitors or ARBs.,Monitor every 4-6 weeks and titrate medications as needed.
+Urinary tract infection,Confirm with urinalysis and urine culture.,"Start antibiotics (e.g., nitrofurantoin or ciprofloxacin).",Encourage hydration; investigate for recurrence if frequent.
+Psoriasis,Diagnose based on silvery scaly plaques; biopsy if atypical.,Start with topical steroids or vitamin D analogs.,Consider systemic agents or biologics for extensive disease.
+Impetigo,Diagnose clinically by honey-colored crusts; swab if uncertain.,Prescribe topical mupirocin or oral antibiotics for extensive cases.,Maintain hygiene and isolate to prevent spread.
+Bronchial Asthma,Diagnose with spirometry showing reversible airway obstruction.,Start inhaled corticosteroids and short-acting beta-agonists.,Develop asthma action plan and schedule follow-up spirometry.
+Acne,Apply topical retinoids to reduce comedones and inflammation.,Use oral antibiotics in moderate to severe cases.,Avoid picking lesions to prevent scarring.
+AIDS,Start combination antiretroviral therapy immediately.,Monitor viral load and CD4 count regularly.,Educate on safe sex and infection prevention.
+Allergy,Identify allergens through testing and patient history.,Treat with antihistamines or corticosteroids as needed.,Consider immunotherapy for chronic symptoms.
+Chronic Cholestasis,Use ursodeoxycholic acid to improve bile flow.,Monitor liver enzymes and bilirubin levels.,Manage pruritus and supplement fat-soluble vitamins.
+Diabetes,Begin with lifestyle changes and dietary control.,Prescribe metformin as first-line medication.,Screen for complications like retinopathy and nephropathy.
+Drug Reaction,Stop the suspected drug immediately.,Treat mild cases with antihistamines.,"Refer severe reactions urgently (e.g., SJS)."
+Fungal Infection,Apply topical antifungals for superficial infections.,Use oral antifungals for systemic or resistant cases.,Keep affected areas clean and dry.
+Gastroenteritis,Rehydrate using oral or IV fluids as needed.,Avoid antibiotics unless clearly indicated.,Promote hygiene and safe food practices.
+GERD,Avoid trigger foods and late meals.,Prescribe a PPI for acid suppression.,Recommend weight loss and bed elevation.
+Hypothyroidism,Start levothyroxine with weight-based dosing.,Recheck TSH after 6–8 weeks and adjust.,Monitor annually once stable.
+Peptic Ulcer Disease,Test and treat for H. pylori infection.,Prescribe PPIs for ulcer healing.,Avoid NSAIDs and monitor for complications.

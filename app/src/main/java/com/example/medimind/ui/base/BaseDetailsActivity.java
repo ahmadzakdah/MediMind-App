@@ -1,5 +1,6 @@
 package com.example.medimind.ui.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
@@ -30,4 +31,15 @@ public abstract class BaseDetailsActivity extends AppCompatActivity {
         container.removeAllViews();
         LayoutInflater.from(this).inflate(layoutResId, container, true);
     }
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+    @Override
+    public void startActivity(Intent i) {
+        super.startActivity(i);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
 }

@@ -16,7 +16,9 @@ import com.example.medimind.ui.fragments.HomeFragment;
 import com.example.medimind.ui.fragments.PatientsFragment;
 import com.example.medimind.ui.fragments.ProfileFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class
+
+MainActivity extends AppCompatActivity {
 
     private final int activeColor = Color.parseColor("#3D008F");
     private final int inactiveColor = Color.parseColor("#999999");

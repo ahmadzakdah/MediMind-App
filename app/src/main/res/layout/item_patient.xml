@@ -8,13 +8,15 @@
     android:layout_marginBottom="12dp"
     app:cardCornerRadius="18dp"
     app:cardElevation="3dp"
-    app:cardBackgroundColor="#F9F9F9">
+    app:cardBackgroundColor="#F9F9F9"
+    android:foreground="?attr/selectableItemBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="12dp">
 
+        <!-- Avatar -->
         <ImageView
             android:id="@+id/imgPatient"
             android:layout_width="56dp"
@@ -25,6 +27,20 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
+        <!-- Archive button -->
+        <ImageView
+            android:id="@+id/btnArchive"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_archive"
+            android:padding="6dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Archive"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <!-- Name -->
         <TextView
             android:id="@+id/tvPatientName"
             android:layout_width="0dp"
@@ -36,8 +52,10 @@
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="@id/imgPatient"
             app:layout_constraintStart_toEndOf="@id/imgPatient"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toStartOf="@id/btnArchive"
+            android:layout_marginEnd="8dp"/>
 
+        <!-- Info -->
         <TextView
             android:id="@+id/tvPatientInfo"
             android:layout_width="0dp"
@@ -49,7 +67,8 @@
             android:textSize="13sp"
             app:layout_constraintTop_toBottomOf="@id/tvPatientName"
             app:layout_constraintStart_toEndOf="@id/imgPatient"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toStartOf="@id/btnArchive"
+            android:layout_marginEnd="8dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
