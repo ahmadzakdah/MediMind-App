@@ -1,3 +1,4 @@
+// java
 package com.example.medimind.ui;
 
 import android.content.Intent;
@@ -22,6 +23,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * ConsultationSummaryActivity
+ *
+ * Purpose:
+ * - Present an ML-driven consultation summary (symptoms, predicted diseases, vitals).
+ * - Allow the doctor to save the consultation to Firestore or discard it.
+ *
+ * Responsibilities and UX choices:
+ * - Read a JSON payload (PredictionSummaryPayload) from the launching Intent.
+ * - Render safe defaults when fields are missing (use "—" and empty lists).
+ * - Disable repeated saves by disabling the save button while the network call is pending.
+ * - Increment the doctor's consultation counter using a merge set with FieldValue.increment on success.
+ * - Keep UI rendering defensive (null checks) so layout changes don't crash the screen.
+ *
+ * Edge cases:
+ * - If user is unauthenticated or MRN is missing the save is blocked and the user is informed.
+ * - If the payload is null, the screen still shows UI but save is prevented and defaults are shown.
+ */
 public class ConsultationSummaryActivity extends BaseDetailsActivity {
 
     public static final String EXTRA_PAYLOAD_JSON = "extra_payload_json";
@@ -77,12 +96,13 @@ public class ConsultationSummaryActivity extends BaseDetailsActivity {
         String json = getIntent().getStringExtra(EXTRA_PAYLOAD_JSON);
         mrn = getIntent().getStringExtra(PatientInfoActivity.EXTRA_MRN);
 
+        // Deserialize payload if present; keep `p` null when we have nothing to show/save.
         p = (json == null) ? null : new Gson().fromJson(json, PredictionSummaryPayload.class);
 
         // ===== Render =====
         if (p != null) {
 
-            // ✅ Age/Gender from payload fields
+            // ✅ Age/Gender from payload fields (use readable defaults)
             if (tvSummaryAgeValue != null) {
                 tvSummaryAgeValue.setText(p.age > 0 ? (p.age + " years") : "—");
             }
@@ -92,6 +112,7 @@ public class ConsultationSummaryActivity extends BaseDetailsActivity {
                 tvSummaryGenderValue.setText(g.isEmpty() || g.equals("—") ? "—" : g);
             }
 
+            // Symptoms and predictions rendered defensively
             txtSymptomsList.setText(joinBullets(p.symptoms));
 
             txtDisease1.setText(nullToDash(p.disease1));
@@ -101,19 +122,23 @@ public class ConsultationSummaryActivity extends BaseDetailsActivity {
             txtDisease3.setText(nullToDash(p.disease3));
             txtProb3.setText(nullToDash(p.prob3));
 
+            // Use repository to provide helpful description/instructions for the top disease.
             String top1 = p.disease1;
             txtDescription.setText(DiseaseTextRepository.getDescription(this, top1));
             txtInstructions.setText(DiseaseTextRepository.getInstructions(this, top1));
 
+            // Render vitals (may be null)
             setVitals(txtBpValue, txtHrValue, txtRrValue, txtSpo2Value, txtSugarValue, txtTempValue, p.vitals);
 
         } else {
+            // Payload missing: show clear placeholders so doctor knows there is no AI suggestion.
             if (tvSummaryAgeValue != null) tvSummaryAgeValue.setText("—");
             if (tvSummaryGenderValue != null) tvSummaryGenderValue.setText("—");
             setVitals(txtBpValue, txtHrValue, txtRrValue, txtSpo2Value, txtSugarValue, txtTempValue, null);
         }
 
         // ===== Actions =====
+        // Discard and save handlers — save is guarded and disables the button while saving to avoid duplicates.
         btnDiscard.setOnClickListener(v -> showDiscardDialog());
         btnSaveClose.setOnClickListener(v -> saveConsultation());
     }
@@ -122,6 +147,7 @@ public class ConsultationSummaryActivity extends BaseDetailsActivity {
     // ✅ Save to Firestore
     // =========================
     private void saveConsultation() {
+        // Validate auth and MRN early to avoid creating incomplete documents.
         String doctorUid = (auth.getCurrentUser() != null) ? auth.getCurrentUser().getUid() : null;
         if (doctorUid == null) {
             Toast.makeText(this, "Please login first.", Toast.LENGTH_SHORT).show();
@@ -132,11 +158,13 @@ public class ConsultationSummaryActivity extends BaseDetailsActivity {
             return;
         }
         if (p == null) {
+            // Nothing to persist — keep UX consistent by informing the user and closing.
             Toast.makeText(this, "Nothing to save.", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
+        // Prevent duplicate taps while network operation is in-flight
         btnSaveClose.setEnabled(false);
 
         String notes = (etNotes == null) ? "" : etNotes.getText().toString().trim();
@@ -144,7 +172,7 @@ public class ConsultationSummaryActivity extends BaseDetailsActivity {
         int ageResolved = (p.age > 0) ? p.age : 0;
         String genderResolved = (p.gender == null || p.gender.trim().isEmpty()) ? "—" : p.gender.trim();
 
-        // ✅ Clean vitals (remove Age/Gender just in case)
+        // ✅ Clean vitals (remove Age/Gender just in case they were included)
         HashMap<String, Object> vitalsClean = new HashMap<>();
         if (p.vitals != null) {
             vitalsClean.putAll(p.vitals);
@@ -152,6 +180,7 @@ public class ConsultationSummaryActivity extends BaseDetailsActivity {
             vitalsClean.remove("Gender");
         }
 
+        // Build consultation document with safe defaults and server timestamp.
         HashMap<String, Object> doc = new HashMap<>();
         doc.put("symptoms", (p.symptoms == null) ? new ArrayList<>() : new ArrayList<>(p.symptoms));
         doc.put("vitals", vitalsClean);
@@ -168,6 +197,7 @@ public class ConsultationSummaryActivity extends BaseDetailsActivity {
         doc.put("notes", notes);
         doc.put("createdAt", FieldValue.serverTimestamp());
 
+        // Persist consultation under doctors/{uid}/patients/{mrn}/consultations
         db.collection("doctors")
                 .document(doctorUid)
                 .collection("patients")
@@ -175,6 +205,7 @@ public class ConsultationSummaryActivity extends BaseDetailsActivity {
                 .collection("consultations")
                 .add(doc)
                 .addOnSuccessListener(ref -> {
+                    // Notify user and increment consultationsCount in the doctor's stats doc atomically.
                     Toast.makeText(this, "Saved ✅", Toast.LENGTH_SHORT).show();
                     db.collection("doctors")
                             .document(doctorUid)
@@ -184,7 +215,7 @@ public class ConsultationSummaryActivity extends BaseDetailsActivity {
                                 put("consultationsCount", FieldValue.increment(1));
                             }}, com.google.firebase.firestore.SetOptions.merge());
 
-
+                    // Return to patient details, clearing intermediate activities.
                     Intent i = new Intent(this, PatientInfoActivity.class);
                     i.putExtra(PatientInfoActivity.EXTRA_MRN, mrn);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -192,6 +223,7 @@ public class ConsultationSummaryActivity extends BaseDetailsActivity {
                     finish();
                 })
                 .addOnFailureListener(e -> {
+                    // Re-enable save on failure so user can retry.
                     btnSaveClose.setEnabled(true);
                     Toast.makeText(this, "Save failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
@@ -202,6 +234,7 @@ public class ConsultationSummaryActivity extends BaseDetailsActivity {
     // =========================
     private void setVitals(TextView bp, TextView hr, TextView rr, TextView spo2, TextView sugar, TextView temp,
                            HashMap<String, Object> vit) {
+        // Render vitals defensively: missing map -> placeholders
         if (vit == null) vit = new HashMap<>();
 
         String sys = get(vit, "bp_sys");
@@ -216,6 +249,7 @@ public class ConsultationSummaryActivity extends BaseDetailsActivity {
         if (temp != null) temp.setText(unit(get(vit, "temp_c"), "°C"));
     }
 
+    // Safely read a value from the vitals map and normalize to a display string.
     private String get(HashMap<String, Object> vit, String key) {
         Object v = vit.get(key);
         if (v == null) return "—";
@@ -223,6 +257,7 @@ public class ConsultationSummaryActivity extends BaseDetailsActivity {
         return s.isEmpty() ? "—" : stripTrailingZeros(s);
     }
 
+    // Remove unnecessary trailing `.0` from numeric strings for cleaner UI.
     private String stripTrailingZeros(String s) {
         try {
             double d = Double.parseDouble(s);
@@ -233,10 +268,12 @@ public class ConsultationSummaryActivity extends BaseDetailsActivity {
         }
     }
 
+    // Helper to detect placeholder strings.
     private boolean isDash(String s) {
         return s == null || s.trim().isEmpty() || "—".equals(s.trim());
     }
 
+    // Append unit or show placeholder when missing.
     private String unit(String v, String u) {
         return isDash(v) ? "—" : (v + " " + u);
     }
@@ -248,6 +285,7 @@ public class ConsultationSummaryActivity extends BaseDetailsActivity {
         return (s == null || s.trim().isEmpty()) ? "—" : s;
     }
 
+    // Join symptom list into bullet-separated lines for display; show placeholder when empty.
     private String joinBullets(java.util.List<String> list) {
         if (list == null || list.isEmpty()) return "—";
         StringBuilder sb = new StringBuilder();
@@ -276,6 +314,7 @@ public class ConsultationSummaryActivity extends BaseDetailsActivity {
                 .show();
     }
 
+    // Add a predicted disease to the list with safe defaults.
     private void addPred(List<HashMap<String, Object>> list, String name, String prob) {
         if (name == null || name.trim().isEmpty()) return;
 

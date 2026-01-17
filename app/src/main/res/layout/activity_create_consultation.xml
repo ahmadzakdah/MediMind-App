@@ -395,6 +395,15 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="8dp"
                             android:background="#EEEAF5"/>
+                        <TextView
+                            android:id="@+id/tvRangeSys"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Allowed: 70–200"
+                            android:textSize="11sp"
+                            android:textColor="#8A8A8A"
+                            android:layout_marginTop="6dp"/>
+
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -462,6 +471,15 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="8dp"
                             android:background="#EEEAF5"/>
+                        <TextView
+                            android:id="@+id/tvRangeDia"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Allowed: 40–130"
+                            android:textSize="11sp"
+                            android:textColor="#8A8A8A"
+                            android:layout_marginTop="6dp"/>
+
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -529,6 +547,14 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="8dp"
                             android:background="#EEEAF5"/>
+                        <TextView
+                            android:id="@+id/tvRangeHr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Allowed: 40–180"
+                            android:textSize="11sp"
+                            android:textColor="#8A8A8A"
+                            android:layout_marginTop="6dp"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -597,6 +623,14 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="8dp"
                             android:background="#EEEAF5"/>
+                        <TextView
+                            android:id="@+id/tvRangeRr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Allowed: 8–40"
+                            android:textSize="11sp"
+                            android:textColor="#8A8A8A"
+                            android:layout_marginTop="6dp"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -664,6 +698,14 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="8dp"
                             android:background="#EEEAF5"/>
+                        <TextView
+                            android:id="@+id/tvRangeSugar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Allowed: 50–400"
+                            android:textSize="11sp"
+                            android:textColor="#8A8A8A"
+                            android:layout_marginTop="6dp"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -732,6 +774,14 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="8dp"
                             android:background="#EEEAF5"/>
+                        <TextView
+                            android:id="@+id/tvRangeTemp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Allowed: 35.0–42.0"
+                            android:textSize="11sp"
+                            android:textColor="#8A8A8A"
+                            android:layout_marginTop="6dp"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -798,6 +848,14 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="8dp"
                             android:background="#EEEAF5"/>
+                        <TextView
+                            android:id="@+id/tvRangeSpo2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Allowed: 70–100"
+                            android:textSize="11sp"
+                            android:textColor="#8A8A8A"
+                            android:layout_marginTop="6dp"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

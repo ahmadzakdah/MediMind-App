@@ -1,3 +1,4 @@
+// java
 package com.example.medimind.ui;
 
 import com.example.medimind.ui.HelperClasses.Patient;
@@ -6,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
@@ -31,13 +31,30 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+/**
+ * CreateMedicalRecordActivity
+ *
+ * Purpose:
+ * - Let a doctor create a new patient record (MRN is auto-incremented).
+ * - Validate required fields (name, age, gender) with live feedback.
+ * - Perform a Firestore transaction to safely allocate the next MRN and write the patient.
+ *
+ * Key decisions / notes:
+ * - MRN is shown as read-only preview and cannot be edited by the user.
+ * - Validation uses setErrorEnabled(false) when no error to avoid leaving empty space.
+ * - Transaction increments counters and updates stats atomically to avoid race conditions.
+ * - After successful save the newly created PatientInfoActivity is opened and this screen is finished.
+ */
 public class CreateMedicalRecordActivity extends BaseDetailsActivity {
 
+    // Input containers and fields
     private TextInputLayout tilMrn, tilName, tilAge, tilGender;
     private TextInputEditText etMrn, etName, etAge, etMeds, etSurgeries, etAllergies, etFamily;
     private MaterialAutoCompleteTextView actGender;
     private Button btnSave;
     NestedScrollView scroll;
+
+    // Firebase
     private FirebaseAuth auth;
     private FirebaseFirestore db;
 
@@ -46,6 +63,10 @@ public class CreateMedicalRecordActivity extends BaseDetailsActivity {
         return "Create Medical Record";
     }
 
+    /**
+     * Small helper to wire the back button if present in the layout.
+     * Makes the header back button visible and finishes the activity when tapped.
+     */
     private void setupBackButton() {
         android.widget.ImageView btnBack = findViewById(R.id.btnBack);
         if (btnBack == null) return;
@@ -56,18 +77,16 @@ public class CreateMedicalRecordActivity extends BaseDetailsActivity {
         });
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentLayout(R.layout.activity_create_medical_record);
         setupBackButton();
 
-
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        // Bind views
+        // ===== Bind views =====
         tilMrn = findViewById(R.id.tilMrn);
         tilName = findViewById(R.id.tilName);
         tilAge = findViewById(R.id.tilAge);
@@ -86,44 +105,48 @@ public class CreateMedicalRecordActivity extends BaseDetailsActivity {
         btnSave = findViewById(R.id.btnSave);
         scroll = findViewById(R.id.scrollForm);
 
-        // ✅ MRN read-only (حتى لو نسيت تضيفها في XML)
+        // MRN is read-only in the UI (defensive: in case XML forgot to mark it)
         etMrn.setFocusable(false);
         etMrn.setClickable(false);
         etMrn.setCursorVisible(false);
         etMrn.setLongClickable(false);
 
-        // ✅ مهم: نخلي error container مطفي افتراضيًا لتجنب الفراغات
+        // Hide error containers by default so they don't reserve vertical space.
         setFieldError(tilMrn, null);
         setFieldError(tilName, null);
         setFieldError(tilAge, null);
         setFieldError(tilGender, null);
 
-        setupGenderDropdown();     // Gender list only
-        setupLiveValidation();     // Live validation (بدون MRN)
+        setupGenderDropdown();     // configure gender selector
+        setupLiveValidation();     // attach live validators
 
-        // ✅ لازم تتنادى هون عشان يظهر MRN أول ما تفتح الشاشة
+        // Load MRN preview immediately so user sees it right away.
         loadNextMrnPreview();
 
         btnSave.setOnClickListener(v -> saveToFirestore());
     }
 
     /**
-     * ✅ الحل الأساسي لمشكلة الفراغات:
-     * لما ما يكون في خطأ، لازم نعمل setErrorEnabled(false)
+     * Helper that sets/clears TextInputLayout error while also toggling errorEnabled
+     * to prevent leftover empty spacing when there is no error.
      */
     private void setFieldError(TextInputLayout til, String error) {
         if (til == null) return;
 
         if (error == null || error.trim().isEmpty()) {
             til.setError(null);
-            til.setErrorEnabled(false); // ✅ يمنع مساحة الخطأ (الفراغ)
+            til.setErrorEnabled(false); // important: avoid reserved space
         } else {
             til.setErrorEnabled(true);
             til.setError(error);
         }
     }
 
-    // Gender dropdown: Male/Female only, no typing
+    /**
+     * Configure the gender autocomplete as a simple dropdown (Male/Female).
+     * - User cannot type arbitrary values (adapter is fixed).
+     * - Validate on selection and when focus is lost.
+     */
     private void setupGenderDropdown() {
         String[] genders = {"Male", "Female"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -133,16 +156,16 @@ public class CreateMedicalRecordActivity extends BaseDetailsActivity {
         );
         actGender.setAdapter(adapter);
 
-        // show list on click
+        // show list when tapping the field
         actGender.setOnClickListener(v -> actGender.showDropDown());
 
-        // validation when selected
+        // validation when the user selects an item
         actGender.setOnItemClickListener((parent, view, position, id) -> {
             String g = safeText(actGender.getText());
             setFieldError(tilGender, g.isEmpty() ? "Required" : null);
         });
 
-        // if user leaves without choosing
+        // validate once the field loses focus to catch empty selection
         actGender.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
                 String g = safeText(actGender.getText());
@@ -151,26 +174,33 @@ public class CreateMedicalRecordActivity extends BaseDetailsActivity {
         });
     }
 
-    // System date automatically (yyyy-MM-dd)
+    // Return today's date in yyyy-MM-dd to stamp the record.
     private String getSystemDate() {
         return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     }
 
-    // ✅ Live visual validation (بدون MRN لأنه تلقائي)
+    /**
+     * Attach lightweight text watchers to provide immediate feedback:
+     * - Name: required
+     * - Age: numeric and within reasonable range
+     *
+     * MRN is excluded because it is auto-generated.
+     */
     private void setupLiveValidation() {
-        // Name
+        // Name watcher
         etName.addTextChangedListener(simpleWatcher(() -> {
             String name = safeText(etName.getText());
             setFieldError(tilName, name.isEmpty() ? "Required" : null);
         }));
 
-        // Age
+        // Age watcher with numeric validation
         etAge.addTextChangedListener(simpleWatcher(() -> {
             String ageStr = safeText(etAge.getText());
             setFieldError(tilAge, validateAgeError(ageStr));
         }));
     }
 
+    // Return an error string for age or null when valid.
     private String validateAgeError(String ageStr) {
         if (ageStr.isEmpty()) return "Required";
         Integer age = null;
@@ -182,7 +212,10 @@ public class CreateMedicalRecordActivity extends BaseDetailsActivity {
         return null;
     }
 
-    // Required fields final check
+    /**
+     * Final required-field validation before attempting to save.
+     * Returns true only when all required inputs are valid.
+     */
     private boolean validateRequiredFinal() {
         String name = safeText(etName.getText());
         String ageStr = safeText(etAge.getText());
@@ -203,7 +236,21 @@ public class CreateMedicalRecordActivity extends BaseDetailsActivity {
         return ok;
     }
 
-    // Save under authenticated doctor's UID + MRN auto increment by Transaction
+    /**
+     * Save a new patient record under the authenticated doctor's collection.
+     *
+     * Steps:
+     * 1) Ensure authenticated
+     * 2) Ensure MRN preview is loaded
+     * 3) Validate required fields
+     * 4) Run a Firestore transaction to:
+     *    - read counters.nextMrn
+     *    - write the patient document at doctors/{uid}/patients/{mrn}
+     *    - merge default archive flags and increment stats.patientsCount
+     *    - increment counters.nextMrn atomically
+     *
+     * On success: show toast, open PatientInfoActivity for the new MRN and finish this screen.
+     */
     private void saveToFirestore() {
         String doctorUid = (auth.getCurrentUser() != null) ? auth.getCurrentUser().getUid() : null;
         if (doctorUid == null) {
@@ -211,7 +258,7 @@ public class CreateMedicalRecordActivity extends BaseDetailsActivity {
             return;
         }
 
-        // ✅ إذا الـ MRN لسه ما انعرض (preview) ما نخلي المستخدم يحفظ
+        // MRN preview must be present; otherwise ask user to wait and refresh.
         String mrnPreview = safeText(etMrn.getText());
         if (mrnPreview.isEmpty()) {
             Toast.makeText(this, "MRN is loading... try again.", Toast.LENGTH_SHORT).show();
@@ -245,48 +292,48 @@ public class CreateMedicalRecordActivity extends BaseDetailsActivity {
                         .collection("meta")
                         .document("counters");
 
+        // Firestore transaction ensures the next MRN allocation is atomic and safe under concurrency.
         db.runTransaction(transaction -> {
-            DocumentSnapshot snap = transaction.get(counterRef);
+                    DocumentSnapshot snap = transaction.get(counterRef);
 
-            long nextMrn = 1;
-            if (snap.exists()) {
-                Long stored = snap.getLong("nextMrn");
-                if (stored != null) nextMrn = stored;
-            }
+                    long nextMrn = 1;
+                    if (snap.exists()) {
+                        Long stored = snap.getLong("nextMrn");
+                        if (stored != null) nextMrn = stored;
+                    }
 
-            String mrnStr = String.valueOf(nextMrn);
+                    String mrnStr = String.valueOf(nextMrn);
 
-            DocumentReference patientRef =
-                    db.collection("doctors")
-                            .document(doctorUid)
-                            .collection("patients")
-                            .document(mrnStr);
+                    DocumentReference patientRef =
+                            db.collection("doctors")
+                                    .document(doctorUid)
+                                    .collection("patients")
+                                    .document(mrnStr);
 
-            Patient patient = new Patient(
-                    mrnStr,
-                    name,
-                    nameLower,
-                    age,
-                    gender,
-                    recordCreationDate,
-                    meds,
-                    surgeries,
-                    allergies,
-                    family,
-                    nowMillis
-            );
+                    Patient patient = new Patient(
+                            mrnStr,
+                            name,
+                            nameLower,
+                            age,
+                            gender,
+                            recordCreationDate,
+                            meds,
+                            surgeries,
+                            allergies,
+                            family,
+                            nowMillis
+                    );
 
-
-                    // save patient
+                    // write patient document
                     transaction.set(patientRef, patient);
 
-                    // ✅ archive flags (default)
+                    // ensure archive flags exist with defaults (merge keeps existing values)
                     HashMap<String, Object> arch = new HashMap<>();
                     arch.put("archived", false);
                     arch.remove("archivedAt");
                     transaction.set(patientRef, arch, SetOptions.merge());
 
-
+                    // increment stats.patientsCount (merge will create doc if missing)
                     DocumentReference statsRef =
                             db.collection("doctors")
                                     .document(doctorUid)
@@ -297,35 +344,35 @@ public class CreateMedicalRecordActivity extends BaseDetailsActivity {
                         put("patientsCount", FieldValue.increment(1));
                     }}, SetOptions.merge());
 
+                    // update counters.nextMrn
+                    HashMap<String, Object> update = new HashMap<>();
+                    update.put("nextMrn", nextMrn + 1);
+                    transaction.set(counterRef, update, SetOptions.merge());
 
-                    // increment counter
-            HashMap<String, Object> update = new HashMap<>();
-            update.put("nextMrn", nextMrn + 1);
-
-            // إذا وثيقة counters مش موجودة، merge ينشئها تلقائيًا
-            transaction.set(counterRef, update, SetOptions.merge());
-
-            return mrnStr;
+                    return mrnStr;
                 }).addOnSuccessListener(mrnStr -> {
                     btnSave.setEnabled(true);
                     Toast.makeText(this, "Saved ✅ MRN: " + mrnStr, Toast.LENGTH_SHORT).show();
 
-                    // ✅ افتح PatientInfoActivity مباشرة
+                    // Open patient info for the newly created MRN and close this screen.
                     Intent i = new Intent(CreateMedicalRecordActivity.this, PatientInfoActivity.class);
                     i.putExtra("mrn", mrnStr);
                     startActivity(i);
 
-                    // (اختياري) اقفل صفحة الإنشاء عشان ما يرجع عليها بالباك
                     finish();
                 })
                 .addOnFailureListener(e -> {
-            btnSave.setEnabled(true);
-            Toast.makeText(this, "Save failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        });
+                    btnSave.setEnabled(true);
+                    Toast.makeText(this, "Save failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
     }
 
+    /**
+     * Clear non-MRN fields after a save or when resetting the form.
+     * Keeps MRN intact because a new MRN preview will be shown after a save.
+     */
     private void clearForm() {
-        // ✅ لا تمسح MRN هنا، لأننا رح نعرض الجديد مباشرة بعد الحفظ
+        // Note: do not clear MRN here
         etName.setText("");
         etAge.setText("");
         actGender.setText("", false);
@@ -335,18 +382,23 @@ public class CreateMedicalRecordActivity extends BaseDetailsActivity {
         etAllergies.setText("");
         etFamily.setText("");
 
-        // ✅ اهم جزء: امسح الأخطاء + اطفي errorEnabled عشان ما يحجز مساحة
+        // remove errors and disable error containers to avoid reserved space
         setFieldError(tilMrn, null);
         setFieldError(tilName, null);
         setFieldError(tilAge, null);
         setFieldError(tilGender, null);
     }
 
+    // Safe extraction of trimmed text from Editable objects.
     private String safeText(Editable e) {
         return (e == null) ? "" : e.toString().trim();
     }
 
-    // Preview MRN (UI only)
+    /**
+     * Load the next MRN from Firestore counters document for preview only.
+     * If the counters doc doesn't exist the default is 1.
+     * This is a best-effort UX feature and not a replacement for the transaction.
+     */
     private void loadNextMrnPreview() {
         String doctorUid;
         if (auth.getCurrentUser() != null)
@@ -377,7 +429,7 @@ public class CreateMedicalRecordActivity extends BaseDetailsActivity {
                 );
     }
 
-    // Small helper for text watchers
+    // Lightweight TextWatcher factory that runs a Runnable after text changes.
     private TextWatcher simpleWatcher(Runnable afterChanged) {
         return new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
