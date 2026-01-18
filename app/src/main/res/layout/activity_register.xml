@@ -105,7 +105,7 @@
                         android:id="@+id/etName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_user"
+                        android:drawableStart="@drawable/ic_user"
                         android:drawablePadding="10dp"
                         android:inputType="textPersonName"
                         android:hint="Name"
@@ -136,7 +136,7 @@
                         android:id="@+id/etEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_email"
+                        android:drawableStart="@drawable/ic_email"
                         android:drawablePadding="10dp"
                         android:inputType="textEmailAddress"
                         android:hint="Email"
@@ -233,7 +233,7 @@
                         android:id="@+id/etPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_phone"
+                        android:drawableStart="@drawable/ic_phone"
                         android:drawablePadding="10dp"
                         android:inputType="phone"
                         android:hint="Phone"
@@ -263,6 +263,27 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="24dp"/>
+
+                <TextView
+                    android:id="@+id/tvServerMsg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#D32F2F"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    android:text="" />
+
+                <!-- Loading -->
+                <ProgressBar
+                    android:id="@+id/pb"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone" />
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
