@@ -6,59 +6,45 @@
     android:layout_height="match_parent"
     android:background="#3D008F">
 
-    <!-- هيدر بنفسجي -->
+    <!-- ✅ ثابت: نهاية المنطقة البنفسجية -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelinePurpleEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="170dp" />
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="0dp"
-        android:layout_height="220dp"
+        android:layout_height="0dp"
         android:background="#3D008F"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guidelinePurpleEnd"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- لوجو + اسم التطبيق -->
-        <LinearLayout
-            android:id="@+id/logoRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginStart="138dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
+
+    <include
+            android:id="@+id/incHeader"
+            layout="@layout/include_header_medimind"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-            <ImageView
-                android:id="@+id/ivLogo"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:src="@drawable/logo"
-                android:contentDescription="@null" />
-
-            <TextView
-                android:id="@+id/tvBrand"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="MediMind"
-                android:textColor="@android:color/white"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <!-- HELLO -->
         <TextView
             android:id="@+id/tvHello"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginBottom="18dp"
             android:text="HELLO!"
             android:textColor="@android:color/white"
             android:textSize="26sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/logoRow" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
             android:id="@+id/tvSubHello"
@@ -68,12 +54,12 @@
             android:text="Welcome from MediMind"
             android:textColor="@android:color/white"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvHello" />
+            android:layout_marginBottom="6dp"
+            app:layout_constraintTop_toBottomOf="@id/tvHello"
+            app:layout_constraintStart_toStartOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- النبتة (نصها بنفسجي ونصها أبيض) -->
 
     <!-- البانيل البيضا بحواف علوية مدوّرة -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -85,7 +71,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintTop_toTopOf="@id/guidelinePurpleEnd"
         app:layout_constraintVertical_bias="1.0">
 
         <!-- عنوان Login -->
@@ -106,8 +92,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilEmail"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:layout_width="360dp"
-            android:layout_height="81dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="22dp"
             android:layout_marginTop="26dp"
             android:layout_marginEnd="22dp"
@@ -142,8 +128,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilPassword"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:layout_width="351dp"
-            android:layout_height="48dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="22dp"
             android:layout_marginTop="14dp"
             android:layout_marginEnd="22dp"
@@ -244,8 +230,8 @@
         <!-- Or login with -->
         <LinearLayout
             android:id="@+id/llOr"
-            android:layout_width="356dp"
-            android:layout_height="53dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="26dp"
             android:layout_marginEnd="32dp"
@@ -328,7 +314,6 @@
                 android:textStyle="bold"
                 android:textSize="20sp"/>
         </LinearLayout>
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

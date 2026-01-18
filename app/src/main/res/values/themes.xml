@@ -1,8 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
     <style name="Base.Theme.MediMindV2" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <!-- Text colors (عام) -->
+        <item name="android:textColorPrimary">#2A2A2A</item>
+        <item name="android:textColorSecondary">#6B6B6B</item>
+
+        <!-- Hint color (الأهم) -->
+        <item name="android:textColorHint">#9A9A9A</item>
     </style>
 
     <style name="Theme.MediMindV2" parent="Base.Theme.MediMindV2" />
