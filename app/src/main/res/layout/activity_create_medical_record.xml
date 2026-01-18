@@ -32,7 +32,6 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp">
 
-                <!-- Section title -->
                 <!-- Title row: Back + Patient Information -->
                 <LinearLayout
                     android:id="@+id/rowFormTitle"
@@ -65,8 +64,6 @@
                         android:textStyle="bold"/>
                 </LinearLayout>
 
-
-
                 <!-- MRN (read-only) -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilMrn"
@@ -74,6 +71,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    android:hint="Medical Record Number (MRN)*"
+                    app:hintEnabled="true"
+                    app:hintTextColor="#5C5C5C"
                     app:boxBackgroundColor="#F0F0F0"
                     app:boxCornerRadiusTopStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
@@ -87,7 +87,6 @@
                         android:id="@+id/etMrn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Medical Record Number (MRN)*"
                         android:focusable="false"
                         android:clickable="false"
                         android:cursorVisible="false"
@@ -102,6 +101,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:hint="Name*"
+                    app:hintEnabled="true"
+                    app:hintTextColor="#5C5C5C"
                     app:boxBackgroundColor="#F0F0F0"
                     app:boxCornerRadiusTopStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
@@ -115,7 +117,6 @@
                         android:id="@+id/etName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Name*"
                         android:inputType="textPersonName"
                         android:textColor="#333333"/>
                 </com.google.android.material.textfield.TextInputLayout>
@@ -127,6 +128,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:hint="Age*"
+                    app:hintEnabled="true"
+                    app:hintTextColor="#5C5C5C"
                     app:boxBackgroundColor="#F0F0F0"
                     app:boxCornerRadiusTopStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
@@ -140,7 +144,6 @@
                         android:id="@+id/etAge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Age*"
                         android:inputType="number"
                         android:textColor="#333333"/>
                 </com.google.android.material.textfield.TextInputLayout>
@@ -152,6 +155,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:hint="Gender*"
+                    app:hintEnabled="true"
+                    app:hintTextColor="#5C5C5C"
                     app:boxBackgroundColor="#F0F0F0"
                     app:boxCornerRadiusTopStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
@@ -165,7 +171,6 @@
                         android:id="@+id/actGender"
                         android:layout_width="match_parent"
                         android:layout_height="58dp"
-                        android:hint="Gender*"
                         android:inputType="none"
                         android:cursorVisible="false"
                         android:longClickable="false"
@@ -179,6 +184,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:hint="Current Medications"
+                    app:hintEnabled="true"
+                    app:hintTextColor="#5C5C5C"
                     app:boxBackgroundColor="#F0F0F0"
                     app:boxCornerRadiusTopStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
@@ -192,7 +200,6 @@
                         android:id="@+id/etMeds"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Current Medications"
                         android:inputType="textMultiLine"
                         android:minLines="1"
                         android:maxLines="4"
@@ -206,6 +213,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:hint="Previous Surgeries"
+                    app:hintEnabled="true"
+                    app:hintTextColor="#5C5C5C"
                     app:boxBackgroundColor="#F0F0F0"
                     app:boxCornerRadiusTopStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
@@ -219,7 +229,6 @@
                         android:id="@+id/etSurgeries"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Previous Surgeries"
                         android:inputType="textMultiLine"
                         android:minLines="1"
                         android:textColor="#333333"/>
@@ -232,6 +241,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:hint="Drug Allergies"
+                    app:hintEnabled="true"
+                    app:hintTextColor="#5C5C5C"
                     app:boxBackgroundColor="#F0F0F0"
                     app:boxCornerRadiusTopStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
@@ -245,7 +257,6 @@
                         android:id="@+id/etAllergies"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Drug Allergies"
                         android:inputType="textMultiLine"
                         android:minLines="1"
                         android:textColor="#333333"/>
@@ -258,6 +269,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:hint="Family History of Genetic Diseases"
+                    app:hintEnabled="true"
+                    app:hintTextColor="#5C5C5C"
                     app:boxBackgroundColor="#F0F0F0"
                     app:boxCornerRadiusTopStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
@@ -271,7 +285,6 @@
                         android:id="@+id/etFamily"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Family History of Genetic Diseases"
                         android:inputType="textMultiLine"
                         android:minLines="2"
                         android:textColor="#333333"/>

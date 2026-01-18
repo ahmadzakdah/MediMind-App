@@ -164,18 +164,19 @@
                         app:startIconDrawable="@drawable/ic_search"
                         app:startIconTint="#4B0099"
                         app:startIconContentDescription="Search"
-                        app:endIconMode="clear_text">
+                        app:endIconMode="clear_text"/>
 
-                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                            android:id="@+id/etSymptom"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Type a symptom (e.g., fever)"
-                            android:inputType="text"
-                            android:popupBackground="@drawable/bg_dropdown_popup"
-                            android:dropDownVerticalOffset="10dp"
-                            android:dropDownHeight="280dp"/>
-                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/etSymptom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Type a symptom (e.g., fever)"
+                        android:inputType="text"
+                        android:imeOptions="actionDone"
+                        android:singleLine="true"
+                        android:popupBackground="@drawable/bg_dropdown_popup"
+                        android:dropDownVerticalOffset="10dp"
+                        android:dropDownHeight="280dp"/>
 
 
 
